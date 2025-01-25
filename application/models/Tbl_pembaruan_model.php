@@ -23,6 +23,14 @@ class Tbl_pembaruan_model extends CI_Model
         return $this->db->get($this->table)->result();
     }
 
+    function get_all_by_kapal($id)
+    {
+        $this->db->order_by($this->id, $this->order);
+        $this->db->join('tbl_sertifikat', 'tbl_sertifikat.id_sertifikat = tbl_pembaruan.id_sertifikat');
+        $this->db->where('tbl_pembaruan.id_sertifikat', $id);
+        return $this->db->get($this->table)->result();
+    }
+
     // get data by id
     function get_by_id($id)
     {

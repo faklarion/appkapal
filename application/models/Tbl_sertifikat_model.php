@@ -23,23 +23,57 @@ class Tbl_sertifikat_model extends CI_Model
         return $this->db->get($this->table)->result();
     }
 
+    function get_all_expired()
+    {
+        $this->db->order_by($this->id, $this->order);
+        $this->db->join('tbl_kapal', 'tbl_kapal.id_kapal = tbl_sertifikat.id_kapal');
+        $this->db->where('tanggal_expired < CURRENT_DATE()');
+        return $this->db->get($this->table)->result();
+    }
+
+    function count_expired()
+    {
+        $this->db->order_by($this->id, $this->order);
+        $this->db->join('tbl_kapal', 'tbl_kapal.id_kapal = tbl_sertifikat.id_kapal');
+        $this->db->where('tanggal_expired < CURRENT_DATE()');
+        return $this->db->get($this->table)->num_rows();
+    }
+
+    function count_belum()
+    {
+        $this->db->order_by($this->id, $this->order);
+        $this->db->join('tbl_kapal', 'tbl_kapal.id_kapal = tbl_sertifikat.id_kapal');
+        $this->db->where('tanggal_expired >= CURRENT_DATE()');
+        return $this->db->get($this->table)->num_rows();
+    }
+
+    function get_all_belum()
+    {
+        $this->db->order_by($this->id, $this->order);
+        $this->db->join('tbl_kapal', 'tbl_kapal.id_kapal = tbl_sertifikat.id_kapal');
+        $this->db->where('tanggal_expired >= CURRENT_DATE()');
+        return $this->db->get($this->table)->result();
+    }
+
+
     // get data by id
     function get_by_id($id)
     {
         $this->db->where($this->id, $id);
+        $this->db->join('tbl_kapal', 'tbl_kapal.id_kapal = tbl_sertifikat.id_kapal');
         return $this->db->get($this->table)->row();
     }
     
     // get total rows
     function total_rows($q = NULL) {
         $this->db->like('id_sertifikat', $q);
-	$this->db->or_like('id_kapal', $q);
-	$this->db->or_like('tempat_pendaftaran', $q);
-	$this->db->or_like('tanda_pendaftaran', $q);
-	$this->db->or_like('tanggal_terbit', $q);
-	$this->db->or_like('pembaruan_terakhir', $q);
-	$this->db->or_like('tanggal_expired', $q);
-	$this->db->from($this->table);
+        $this->db->or_like('id_kapal', $q);
+        $this->db->or_like('tempat_pendaftaran', $q);
+        $this->db->or_like('tanda_pendaftaran', $q);
+        $this->db->or_like('tanggal_terbit', $q);
+        $this->db->or_like('pembaruan_terakhir', $q);
+        $this->db->or_like('tanggal_expired', $q);
+        $this->db->from($this->table);
         return $this->db->count_all_results();
     }
 
@@ -47,13 +81,13 @@ class Tbl_sertifikat_model extends CI_Model
     function get_limit_data($limit, $start = 0, $q = NULL) {
         $this->db->order_by($this->id, $this->order);
         $this->db->like('id_sertifikat', $q);
-	$this->db->or_like('id_kapal', $q);
-	$this->db->or_like('tempat_pendaftaran', $q);
-	$this->db->or_like('tanda_pendaftaran', $q);
-	$this->db->or_like('tanggal_terbit', $q);
-	$this->db->or_like('pembaruan_terakhir', $q);
-	$this->db->or_like('tanggal_expired', $q);
-	$this->db->limit($limit, $start);
+        $this->db->or_like('id_kapal', $q);
+        $this->db->or_like('tempat_pendaftaran', $q);
+        $this->db->or_like('tanda_pendaftaran', $q);
+        $this->db->or_like('tanggal_terbit', $q);
+        $this->db->or_like('pembaruan_terakhir', $q);
+        $this->db->or_like('tanggal_expired', $q);
+        $this->db->limit($limit, $start);
         return $this->db->get($this->table)->result();
     }
 

@@ -13,7 +13,21 @@
             <div class='col-md-9'>
             <div style="padding-bottom: 10px;">
                 <?php echo anchor(site_url('tbl_sertifikat/create'), '<i class="fa fa-wpforms" aria-hidden="true"></i> Tambah Data', 'class="btn btn-danger btn-sm"'); ?>
-		        <?php echo anchor(site_url('tbl_sertifikat/word'), '<i class="fa fa-file-word-o" aria-hidden="true"></i> Export Ms Word', 'class="btn btn-primary btn-sm"'); ?>
+            </div>
+            <div style="padding-bottom: 10px;">
+                <form action="<?php echo site_url('tbl_sertifikat/filter'); ?>" method="get" target="_blank" class="form-inline">
+                    <label for="status" class="mr-2">Status:</label>
+                    <select name="status" id="status" class="form-control mr-2">
+                        <option value="0">Expired</option>
+                        <option value="1">Belum Expired</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary">Cetak</button>
+                </form>
+            </div>
+
+            <div style="padding-bottom: 10px;">
+                <label class="mr-2">Cetak Laporan Grafik:</label>
+                <?php echo anchor(site_url('tbl_sertifikat/grafik'), 'Cetak', 'target="_blank" class="btn btn-primary btn-sm"'); ?>
             </div>
             </div>
             </div>
@@ -51,32 +65,32 @@
             {
                 ?>
                 <tr>
-			<td width="10px"><?php echo ++$start ?></td>
-			<td><?php echo $tbl_sertifikat->nama_kapal ?></td>
-			<td><?php echo $tbl_sertifikat->tempat_pendaftaran ?></td>
-			<td><?php echo $tbl_sertifikat->tanda_pendaftaran ?></td>
-			<td><?php echo tgl_indo($tbl_sertifikat->tanggal_terbit) ?></td>
-			<td><?php echo tgl_indo($tbl_sertifikat->pembaruan_terakhir) ?></td>
-			<td><?php echo tgl_indo($tbl_sertifikat->tanggal_expired) ?></td>
-            <td>
-                <?php 
-                    if($tbl_sertifikat->tanggal_expired > date('Y-m-d')) {
-                        echo 'Belum Expired';
-                    } elseif($tbl_sertifikat->tanggal_expired < date('Y-m-d')) {
-                        echo 'Sertifikat Expired, Harap Perbarui';
-                    }
-                ?>
-            </td>
-			<td style="text-align:center" width="200px">
-                <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal<?php echo $tbl_sertifikat->id_sertifikat ?>">Detail Pembaruan</button>
-                <?php 
-                    // Tombol Edit dan Hapus
-                    //echo anchor(site_url('tbl_sertifikat/update/' . $tbl_sertifikat->id_sertifikat),'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>','class="btn btn-primary btn-sm"'); 
-                    echo '  '; 
-                    echo anchor(site_url('tbl_sertifikat/delete/' . $tbl_sertifikat->id_sertifikat),'<i class="fa fa-trash-o" aria-hidden="true"></i>','class="btn btn-danger btn-sm" Delete onclick="javascript: return confirm(\'Are You Sure ?\')"'); 
-                ?>
-			</td>
-		</tr>
+                    <td width="10px"><?php echo ++$start ?></td>
+                    <td><?php echo $tbl_sertifikat->nama_kapal ?></td>
+                    <td><?php echo $tbl_sertifikat->tempat_pendaftaran ?></td>
+                    <td><?php echo $tbl_sertifikat->tanda_pendaftaran ?></td>
+                    <td><?php echo tgl_indo($tbl_sertifikat->tanggal_terbit) ?></td>
+                    <td><?php echo tgl_indo($tbl_sertifikat->pembaruan_terakhir) ?></td>
+                    <td><?php echo tgl_indo($tbl_sertifikat->tanggal_expired) ?></td>
+                    <td>
+                        <?php 
+                            if($tbl_sertifikat->tanggal_expired > date('Y-m-d')) {
+                                echo 'Belum Expired';
+                            } elseif($tbl_sertifikat->tanggal_expired < date('Y-m-d')) {
+                                echo 'Sertifikat Expired, Harap Perbarui';
+                            }
+                        ?>
+                    </td>
+                    <td style="text-align:center" width="200px">
+                        <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal<?php echo $tbl_sertifikat->id_sertifikat ?>">Detail Pembaruan</button>
+                        <?php 
+                            // Tombol Edit dan Hapus
+                            echo anchor(site_url('tbl_sertifikat/read/' . $tbl_sertifikat->id_sertifikat),'<i class="fa fa-print" aria-hidden="true"></i>','target="_blank" class="btn btn-primary btn-sm"'); 
+                            echo '  '; 
+                            echo anchor(site_url('tbl_sertifikat/delete/' . $tbl_sertifikat->id_sertifikat),'<i class="fa fa-trash-o" aria-hidden="true"></i>','class="btn btn-danger btn-sm" Delete onclick="javascript: return confirm(\'Are You Sure ?\')"'); 
+                        ?>
+                    </td>
+                </tr>
                 <?php
             }
             ?>
@@ -102,6 +116,9 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                <?php 
+                    echo anchor(site_url('tbl_sertifikat/pengukuhan/' . $tbl_sertifikat->id_sertifikat),'<i class="fa fa-print" aria-hidden="true"> Cetak Halaman Pengukuhan</i>','target="_blank" class="btn btn-primary btn-sm"'); 
+                ?>
                     <table class="table">
                         <tr>
                             <td>Nama Kapal</td>

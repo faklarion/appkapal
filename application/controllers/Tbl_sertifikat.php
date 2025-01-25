@@ -11,6 +11,7 @@ class Tbl_sertifikat extends CI_Controller
         //is_login();
         $this->load->model('Tbl_kapal_model');
         $this->load->model('Tbl_sertifikat_model');
+        $this->load->model('Tbl_pembaruan_model');
         $this->load->library('form_validation');
         date_default_timezone_set('Asia/Makassar');
     }
@@ -52,15 +53,9 @@ class Tbl_sertifikat extends CI_Controller
         $row = $this->Tbl_sertifikat_model->get_by_id($id);
         if ($row) {
             $data = array(
-                'id_sertifikat' => $row->id_sertifikat,
-                'id_kapal' => $row->id_kapal,
-                'tempat_pendaftaran' => $row->tempat_pendaftaran,
-                'tanda_pendaftaran' => $row->tanda_pendaftaran,
-                'tanggal_terbit' => $row->tanggal_terbit,
-                'pembaruan_terakhir' => $row->pembaruan_terakhir,
-                'tanggal_expired' => $row->tanggal_expired,
+                'row' => $row,
 	    );
-            $this->template->load('template','tbl_sertifikat/tbl_sertifikat_read', $data);
+            $this->load->view('tbl_sertifikat/tbl_sertifikat_read', $data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
             redirect(site_url('tbl_sertifikat'));
@@ -199,6 +194,52 @@ class Tbl_sertifikat extends CI_Controller
         );
         
         $this->load->view('tbl_sertifikat/tbl_sertifikat_doc',$data);
+    }
+
+
+    public function filter()
+    {
+        $status = $this->input->get('status');
+
+        if($status == 0) {
+            $dataSertifikat = $this->Tbl_sertifikat_model->get_all_expired();
+            $deskripsi = 'Sertifikat Expired';
+        } elseif($status == 1) {
+            $dataSertifikat = $this->Tbl_sertifikat_model->get_all_belum();
+            $deskripsi = 'Sertifikat Belum Expired';
+        }
+
+        $data = array(
+            'tbl_sertifikat_data' => $dataSertifikat,
+            'start' => 0,
+            'title' => 'Laporan Data Sertifikat',
+            'deskripsi' => $deskripsi,
+        );
+        
+        $this->load->view('tbl_sertifikat/tbl_sertifikat_doc',$data);
+    }
+
+    public function pengukuhan($id)
+    {
+
+        $data = array(
+            'data' => $this->Tbl_pembaruan_model->get_all_by_kapal($id),
+            'start' => 0,
+            'title' => 'Halaman Pengukuhan',
+        );
+        
+        $this->load->view('tbl_sertifikat/halaman_pengukuhan',$data);
+    }
+
+    public function grafik()
+    {
+
+        $data = array(
+            'expired' => $this->Tbl_sertifikat_model->count_expired(),
+            'belum' => $this->Tbl_sertifikat_model->count_belum(),
+        );
+        
+        $this->load->view('tbl_sertifikat/grafik',$data);
     }
 
 }
