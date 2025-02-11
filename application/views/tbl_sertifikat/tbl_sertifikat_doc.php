@@ -29,6 +29,7 @@
                 <th>Tanggal Terbit</th>
                 <th>Pembaruan Terakhir</th>
                 <th>Tanggal Expired</th>
+                <th>Sisa Hari Expired</th>
                 <th>Status</th>
             </tr><?php
             foreach ($tbl_sertifikat_data as $tbl_sertifikat)
@@ -42,6 +43,7 @@
                     <td><?php echo tgl_indo($tbl_sertifikat->tanggal_terbit) ?></td>
                     <td><?php echo tgl_indo($tbl_sertifikat->pembaruan_terakhir) ?></td>
                     <td><?php echo tgl_indo($tbl_sertifikat->tanggal_expired) ?></td>
+                    <td><?php echo hitungSisaHari($tbl_sertifikat->tanggal_expired)?></td>
                     <td>
                         <?php 
                             if($tbl_sertifikat->tanggal_expired > date('Y-m-d')) {

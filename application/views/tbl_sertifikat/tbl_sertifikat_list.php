@@ -26,9 +26,17 @@
             </div>
 
             <div style="padding-bottom: 10px;">
+                <form action="<?php echo site_url('tbl_sertifikat/filter_expired'); ?>" method="get" target="_blank" class="form-inline">
+                    <label for="status" class="mr-2">Tanggal Batas Expired:</label>
+                    <input type="date" name="tanggal_batas" id="tanggal_batas" class="form-control" required>
+                    <button type="submit" class="btn btn-primary">Cetak</button>
+                </form>
+            </div>
+
+            <!-- <div style="padding-bottom: 10px;">
                 <label class="mr-2">Cetak Laporan Grafik:</label>
                 <?php echo anchor(site_url('tbl_sertifikat/grafik'), 'Cetak', 'target="_blank" class="btn btn-primary btn-sm"'); ?>
-            </div>
+            </div>-->
             </div>
             </div>
         
@@ -55,6 +63,7 @@
                 <th>Tanggal Terbit</th>
                 <th>Pembaruan Terakhir</th>
                 <th>Tanggal Expired</th>
+                <th>Sisa Hari Expired</th>
                 <th>Status</th>
                 <th>Action</th>
             </tr>
@@ -72,6 +81,7 @@
                     <td><?php echo tgl_indo($tbl_sertifikat->tanggal_terbit) ?></td>
                     <td><?php echo tgl_indo($tbl_sertifikat->pembaruan_terakhir) ?></td>
                     <td><?php echo tgl_indo($tbl_sertifikat->tanggal_expired) ?></td>
+                    <td><?php echo hitungSisaHari($tbl_sertifikat->tanggal_expired)?></td>
                     <td>
                         <?php 
                             if($tbl_sertifikat->tanggal_expired > date('Y-m-d')) {

@@ -219,6 +219,22 @@ class Tbl_sertifikat extends CI_Controller
         $this->load->view('tbl_sertifikat/tbl_sertifikat_doc',$data);
     }
 
+    public function filter_expired()
+    {
+        $tanggal_batas = $this->input->get('tanggal_batas');
+
+        $dataSertifikat = $this->Tbl_sertifikat_model->getExpired($tanggal_batas);
+
+        $data = array(
+            'tbl_sertifikat_data' => $dataSertifikat,
+            'start' => 0,
+            'title' => 'Laporan Data Sertifikat',
+            'deskripsi' => "Tanggal Batas Expired <= ".tgl_indo($tanggal_batas)."",
+        );
+        
+        $this->load->view('tbl_sertifikat/tbl_sertifikat_doc',$data);
+    }
+
     public function pengukuhan($id)
     {
 

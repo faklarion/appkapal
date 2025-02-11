@@ -48,6 +48,29 @@ function tgl_indo($tanggal){
 	return $pecahkan[2] . ' ' . $bulan[ (int)$pecahkan[1] ] . ' ' . $pecahkan[0];
 }
 
+function hitungSisaHari($tanggal_expired) {
+    $tanggal_sekarang = date("Y-m-d"); // Ambil tanggal hari ini
+
+    // Buat objek DateTime
+    $tanggal_expired_obj = new DateTime($tanggal_expired);
+    $tanggal_sekarang_obj = new DateTime($tanggal_sekarang);
+
+    // Hitung selisih hari
+    $selisih = $tanggal_sekarang_obj->diff($tanggal_expired_obj);
+    $jumlah_hari = $selisih->days;
+
+    // Cek apakah tanggal expired sudah lewat
+    if ($tanggal_sekarang_obj > $tanggal_expired_obj) {
+        return "Sertifikat sudah expired sejak $jumlah_hari hari yang lalu.";
+    } else {
+        return "Sisa waktu sebelum expired: $jumlah_hari hari.";
+    }
+}
+
+function formatRupiah($angka) {
+    return 'Rp ' . number_format($angka, 0, ',', '.');
+}
+
 function select2_dinamis($name,$table,$field,$placeholder){
     $ci = get_instance();
     $select2 = '<select name="'.$name.'" class="form-control select2 select2-hidden-accessible" multiple="" 

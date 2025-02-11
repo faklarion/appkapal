@@ -55,6 +55,13 @@ class Tbl_sertifikat_model extends CI_Model
         return $this->db->get($this->table)->result();
     }
 
+    public function getExpired($tanggal_batas) {
+        $this->db->order_by($this->id, $this->order);
+        $this->db->join('tbl_kapal', 'tbl_kapal.id_kapal = tbl_sertifikat.id_kapal');
+        $this->db->where('tanggal_expired <=', $tanggal_batas);
+        return $this->db->get($this->table)->result();
+    }
+
 
     // get data by id
     function get_by_id($id)
